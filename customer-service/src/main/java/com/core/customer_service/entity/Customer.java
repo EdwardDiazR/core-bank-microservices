@@ -16,4 +16,6 @@ public class Customer {
     private LocalDateTime createdAt;
     private String status;
     private String riskLevel;
+    private Contact contacts;
+    private boolean isPEP;
 }
