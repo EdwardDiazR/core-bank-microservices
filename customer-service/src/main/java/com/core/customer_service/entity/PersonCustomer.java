@@ -1,13 +1,20 @@
-package com.core.customer_service.models;
+package com.core.customer_service.entity;
 
 import jakarta.annotation.Nullable;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
+@SuperBuilder
+@Getter
+@Setter
 public class PersonCustomer extends Customer{
 
-
     private String nationalId;
+
     @Nullable
     private String passport;
     private String nationality;

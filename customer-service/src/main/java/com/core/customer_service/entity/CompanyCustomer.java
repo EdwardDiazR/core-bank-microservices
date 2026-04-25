@@ -1,4 +1,4 @@
-package com.core.customer_service.models;
+package com.core.customer_service.entity;
 
 public class CompanyCustomer {
 }

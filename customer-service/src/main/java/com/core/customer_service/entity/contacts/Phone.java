@@ -1,5 +1,6 @@
-package com.core.customer_service.models;
+package com.core.customer_service.entity.contacts;
 
+import com.core.customer_service.entity.Customer;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 
