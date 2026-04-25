@@ -1,6 +1,7 @@
 package com.core.customer_service.controller;
 
 import com.core.customer_service.DTOs.CreatePersonCustomerDTO;
+import com.core.customer_service.DTOs.PersonCustomerCreatedResponse;
 import com.core.customer_service.entity.PersonCustomer;
 import com.core.customer_service.interfaces.ICustomerService;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class CustomerController {
     @PostMapping("person")
     public ResponseEntity<?> createPersonCustomer(@RequestBody  CreatePersonCustomerDTO customerDTO){
         PersonCustomer personCustomer = _customerService.createPersonCustomer(customerDTO);
-        return ResponseEntity.ok("Usuario creado");
+        PersonCustomerCreatedResponse response = new PersonCustomerCreatedResponse("Usuario creado",200,personCustomer);
+        return ResponseEntity.ok(response);
     }
 }

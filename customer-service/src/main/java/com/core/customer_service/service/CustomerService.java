@@ -4,21 +4,24 @@ import com.core.customer_service.DTOs.CreatePersonCustomerDTO;
 import com.core.customer_service.entity.Customer;
 import com.core.customer_service.entity.PersonCustomer;
 import com.core.customer_service.enums.CustomerType;
+import com.core.customer_service.events.CustomerCreatedEvent;
 import com.core.customer_service.interfaces.ICustomerService;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class CustomerService implements ICustomerService {
 
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
-    public CustomerService(KafkaTemplate<String, String> kafkaTemplate) {
+    public CustomerService(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
@@ -31,15 +34,18 @@ public class CustomerService implements ICustomerService {
         String lastName = toUpper(customerDto.lastName());
         String secondLastName = toUpper(customerDto.secondLastName() != null ? customerDto.secondLastName() : "");
 
-        assert customerDto.passport() != null;
+
 
         PersonCustomer customer = PersonCustomer.builder()
                 .type(CustomerType.PERSON)
                 .nationalId(customerDto.nationalId())
+                .nationality(customerDto.nationality())
                 .passport(!customerDto.passport().isEmpty() ? toUpper(customerDto.passport()) : "")
                 .firstName(firstName)
                 .middleName(middleName)
+                .lastName(lastName)
                 .secondLastname(secondLastName)
+                .contacts(customerDto.contact())
                 .gender(customerDto.gender())
                 .age(calculateAge(customerDto.dob()))
                 .dob(customerDto.dob())
@@ -51,6 +57,11 @@ public class CustomerService implements ICustomerService {
                 .createdAt(now)
                 .profileStatus("ACTIVE")
                 .build();
+
+
+        CustomerCreatedEvent customerCreatedEvent = new CustomerCreatedEvent(customer.getFirstName());
+        kafkaTemplate.send("USER_CREATED",  customerCreatedEvent.toString());
+
 
         return customer;
     }

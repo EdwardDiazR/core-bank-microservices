@@ -4,11 +4,13 @@ import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @SuperBuilder
+@ToString(callSuper = true)
 @Getter
 @Setter
 public class PersonCustomer extends Customer{
