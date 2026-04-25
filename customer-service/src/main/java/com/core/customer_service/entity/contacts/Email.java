@@ -9,10 +9,7 @@ public class Email {
     private boolean isPrincipal;
     private String category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @OneToMany(mappedBy = "customer",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
     private Customer customer;
 }

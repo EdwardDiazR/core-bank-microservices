@@ -5,6 +5,7 @@ import com.core.customer_service.entity.Customer;
 import com.core.customer_service.entity.PersonCustomer;
 import com.core.customer_service.enums.CustomerType;
 import com.core.customer_service.interfaces.ICustomerService;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,7 +15,11 @@ import java.util.Optional;
 
 @Service
 public class CustomerService implements ICustomerService {
-    public CustomerService() {
+
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    public CustomerService(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public PersonCustomer createPersonCustomer(CreatePersonCustomerDTO customerDto) {
@@ -28,7 +33,7 @@ public class CustomerService implements ICustomerService {
 
         assert customerDto.passport() != null;
 
-        return PersonCustomer.builder()
+        PersonCustomer customer = PersonCustomer.builder()
                 .type(CustomerType.PERSON)
                 .nationalId(customerDto.nationalId())
                 .passport(!customerDto.passport().isEmpty() ? toUpper(customerDto.passport()) : "")
@@ -46,6 +51,8 @@ public class CustomerService implements ICustomerService {
                 .createdAt(now)
                 .profileStatus("ACTIVE")
                 .build();
+
+        return customer;
     }
 
     public String toUpper(String value) {

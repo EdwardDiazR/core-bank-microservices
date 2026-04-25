@@ -2,7 +2,6 @@ package com.core.customer_service.entity;
 
 
 import com.core.customer_service.enums.CustomerType;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import lombok.experimental.SuperBuilder;
@@ -10,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 
 @SuperBuilder
-@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Customer {
     private Long id;
