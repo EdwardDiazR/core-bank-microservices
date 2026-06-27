@@ -60,7 +60,9 @@ public class CustomerService implements ICustomerService {
 
 
         CustomerCreatedEvent customerCreatedEvent = new CustomerCreatedEvent(customer.getFirstName());
+/*
         kafkaTemplate.send("USER_CREATED",  customerCreatedEvent.toString());
+*/
 
 
         return customer;
